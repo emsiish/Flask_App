@@ -10,7 +10,7 @@ app.config['MYSQL_DB'] = 'megalan_dev'
 app.config['MYSQL_PORT'] = 3307
 
 @app.route("/")
-def hello_world():
+def table():
     cur = mysql.connection.cursor()
     cur.execute('''SELECT o.id, s.name AS status_text, c.name AS client_name,
   CONVERT(DATE_FORMAT(o.createdon, "%Y-%m-%d %H:%i"), DATETIME) AS create_date, u.name AS create_user, c1.name AS create_club,
