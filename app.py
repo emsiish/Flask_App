@@ -10,7 +10,7 @@ app.config['MYSQL_DB'] = 'megalan_dev'
 app.config['MYSQL_PORT'] = 3307
 
 headings = ("№ поръчка", "Статус", "Клиент", "Приета на", "Приета от", "Приета в", "Сума", "Плащане",
-"Доставка на", "Доставена", "Град", "Адрес", "Адрес на доставка", "Мобилен", "Брой доставки")
+"Доставка на", "Доставена", "Град", "Адрес", "Адрес на доставка", "Мобилен", "Брой доставки", "Бележки")
 
 @app.route("/")
 def table():
@@ -25,7 +25,8 @@ def table():
   p.mlpaytype_name, o.deliveryon, o.delivered,
   #o.sys_version, u1.name AS dealer_name, , c.phone
   c.town, c.address, c.dlvry_address, c.mobile,
-  CONVERT(IF(YEAR(o.deliveryon)<=2000, NULL, DAYOFYEAR(o.deliveryon) - DAYOFYEAR(NOW())), SIGNED) AS dlvry_cnt
+  CONVERT(IF(YEAR(o.deliveryon)<=2000, NULL, DAYOFYEAR(o.deliveryon) - DAYOFYEAR(NOW())), SIGNED) AS dlvry_cnt,
+  o.order_note
 FROM orders o LEFT JOIN order_status s ON (s.id=o.status)
   LEFT JOIN clients c ON (c.client_id=o.client_id)      LEFT JOIN users u ON (u.user_id=o.createdby)
   LEFT JOIN firm_club c1 ON (c1.club_id=o.create_club)  LEFT JOIN firm_club c2 ON (c2.club_id=o.paid_club)
@@ -34,7 +35,8 @@ FROM orders o LEFT JOIN order_status s ON (s.id=o.status)
 WHERE(o.delivery>0)AND(o.createdon>=DATE_ADD(NOW(), INTERVAL -12 MONTH))AND(o.status IN (0,1,2,3,4,7))
 AND(o.delivered=0)''')
     res = cur.fetchall()
-    return render_template("table.html", headings=headings, data=res)
+    table = render_template("table.html", headings=headings, data=res)
+    return table
 
 mysql = MySQL(app)
 
