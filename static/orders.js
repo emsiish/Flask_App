@@ -42,6 +42,7 @@ function hide () {
       tbl.rows[i].cells[column].style.display = "none";
     }
 
+
 function start()
 {
     hide();
