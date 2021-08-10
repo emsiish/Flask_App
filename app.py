@@ -12,19 +12,10 @@ app.config['MYSQL_PORT'] = 3307
 headings = ("№ поръчка", "Статус", "Клиент", "Приета на", "Приета от", "Приета в", "Сума", "Плащане",
 "Доставка на", "Доставена", "Град", "Адрес", "Адрес на доставка", "Мобилен", "Брой доставки", "Бележки")
 
-@app.route("/")
-def table():
-    cur = mysql.connection.cursor()
-    cur.execute('''SELECT o.id, s.name AS status_text, c.name AS client_name,
+base_sql_statement = '''SELECT o.id, s.name AS status_text, c.name AS client_name,
   CONVERT(DATE_FORMAT(o.createdon, "%Y-%m-%d %H:%i"), DATETIME) AS create_date, u.name AS create_user, c1.name AS create_club,
   #IF(o.status IN (3,4,7), c2.name, NULL) AS paid_club,
-  #IF(YEAR(o.payedon)>1990, DATE_FORMAT(o.payedon, "%Y-%m-%d %H:%i"), NULL) AS paid_date,
-  #o.status, o.client_id, 
-  o.total, 
-  #o.parent_id, o.mldoctype_id, o.ware_id, o.object_id, o.vattype_id, o.valuta_id,
-  p.mlpaytype_name, o.deliveryon, o.delivered,
-  #o.sys_version, u1.name AS dealer_name, , c.phone
-  c.town, c.address, c.dlvry_address, c.mobile,
+  o.total, p.mlpaytype_name, o.deliveryon, o.delivered,c.town, c.address, c.dlvry_address, c.mobile,
   CONVERT(IF(YEAR(o.deliveryon)<=2000, NULL, DAYOFYEAR(o.deliveryon) - DAYOFYEAR(NOW())), SIGNED) AS dlvry_cnt,
   o.order_note
 FROM orders o LEFT JOIN order_status s ON (s.id=o.status)
@@ -33,10 +24,23 @@ FROM orders o LEFT JOIN order_status s ON (s.id=o.status)
   LEFT JOIN users u1 ON(u1.user_id=o.dealer_id)
   LEFT JOIN megalan_paytypes p ON (p.mlpaytype_id = o.mlpaytype_id)
 WHERE(o.delivery>0)AND(o.createdon>=DATE_ADD(NOW(), INTERVAL -12 MONTH))AND(o.status IN (0,1,2,3,4,7))
-AND(o.delivered=0)''')
+AND(o.delivered=0)'''
+
+@app.route("/")
+def table():
+    cur = mysql.connection.cursor()
+    cur.execute(base_sql_statement)
     res = cur.fetchall()
-    table = render_template("table.html", headings=headings, data=res)
-    return table
+    return render_template("table.html", headings=headings, data=res)
+    
+@app.route("/order/<int:id>")
+def order(id):
+    cur = mysql.connection.cursor()
+    current_statement = base_sql_statement + "AND o.id = {}".format(id)
+    cur.execute(current_statement)
+    res = cur.fetchall()
+    #res.fileldbyname('client_name')... 
+    return render_template("order.html", data=res)
 
 mysql = MySQL(app)
 
