@@ -24,10 +24,11 @@ function addRowHandlers() {
         var createClickHandler =
             function (row) {
                 return function () {
-                    var cellIndex = getTableCellIndexByHeaderName("Бележки");
+                    var cellIndex = getTableCellIndexByHeaderName("№ поръчка");
                     var cell = row.getElementsByTagName("td")[cellIndex];
                     var id = cell.innerHTML;
-                    alert(id);
+                    var link = "order/" + id;
+                    window.location.href = link;
                 };
             };
         currentRow.onclick = createClickHandler(currentRow);

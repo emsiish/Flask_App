@@ -5,18 +5,65 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <title>orders</title>
+    <title>Поръчка за доставка: "{{data.order_id}}"</title>
 </head>
 <body>
-    <div class="mb-3 w-75 mx-3 mt-1">
-        <label for="exampleFormControlInput1" class="form-label">Client name</label>
-        <input class="form-control" id="client-name" type="text" aria-label="readonly input example" readonly value="">
-      </div>
-      <div class="mb-3 w-75 mx-3">
-        <label for="exampleFormControlTextarea1" class="form-label">Note</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" aria-label="readonly input example" readonly></textarea>
-      </div>
-      <a class="btn btn-primary mx-3" href="#">Go back</a>
+    <h2 style="text-align: center">Поръчка за доставка: "{{data.order_id}}"</h2>
+    <form class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">№ поръчка</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.order_id}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Клиент</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.client_name}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Приета на</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.create_date}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Приета от</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.create_user}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Приета в</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.create_club}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Сума</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.order_total}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Плащане</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.mlpaytype_name}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Доставка на</label>
+            <input type="text" style="font-weight: bold" class="form-control" aria-label="readonly input example" readonly value="{{data.deliveryon}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Адрес</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.client_address}}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Адрес на доставка</label>
+            <input type="text" class="form-control" aria-label="readonly input example" readonly value="{{data.dlvry_address}}">
+        </div>
+        <div class="col-12">
+            <label class="form-label">Мобилен</label>
+            <input class="form-control" type="text" aria-label="readonly input example" readonly value="{{data.mobile}}">
+        </div>
+        <div class="col-12">
+            <label class="form-label">Бележка</label>
+            <textarea class="form-control" rows="3" aria-label="readonly input example" readonly>{{data.order_note}}</textarea>
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a class="btn btn-primary" href="{{ url_for('table') }}">Обратно към таблицата</a>
+        </div>
+</form>
+
+<script src="{{url_for('static', filename='orders.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 </body>
 </html>
