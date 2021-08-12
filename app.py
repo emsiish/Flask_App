@@ -11,12 +11,12 @@ app.config['MYSQL_DB'] = 'megalan_dev'
 app.config['MYSQL_PORT'] = 3307
 
 headings = ("№ поръчка", "Статус", "Клиент", "Приета на", "Приета от", "Приета в", "Сума", "Плащане",
-            "Доставка на", "Доставена", "Град", "Адрес", "Адрес на доставка", "Мобилен", "Бележки")
+            "Доставка на", "Град", "Адрес", "Адрес на доставка", "Мобилен", "Бележки")
 
 base_sql_statement = '''SELECT o.id, s.name AS status_text, c.name AS client_name,
   CONVERT(DATE_FORMAT(o.createdon, "%Y-%m-%d %H:%i"), DATETIME) AS create_date, u.name AS create_user, c1.name AS create_club,
   #IF(o.status IN (3,4,7), c2.name, NULL) AS paid_club,
-  o.total AS order_total, p.mlpaytype_name, o.deliveryon, o.delivered,c.town, c.address AS client_address, c.dlvry_address, c.mobile,
+  o.total AS order_total, p.mlpaytype_name, o.deliveryon,c.town, c.address AS client_address, c.dlvry_address, c.mobile,
   o.order_note
 FROM orders o LEFT JOIN order_status s ON (s.id=o.status)
   LEFT JOIN clients c ON (c.client_id=o.client_id)      LEFT JOIN users u ON (u.user_id=o.createdby)
@@ -50,10 +50,10 @@ def order(id):
     data.order_total = res[6]
     data.mlpaytype_name = res[7]
     data.deliveryon = res[8]
-    data.client_address = res[11]
-    data.dlvry_address = res[12]
-    data.mobile = res[13]
-    data.order_note = res[14]
+    data.client_address = res[10]
+    data.dlvry_address = res[11]
+    data.mobile = res[12]
+    data.order_note = res[13]
 
     return render_template("orders.html", data=data)
 
@@ -61,4 +61,4 @@ def order(id):
 mysql = MySQL(app)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

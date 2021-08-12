@@ -35,7 +35,7 @@ function addRowHandlers() {
     }
 }
 
-function hide () {
+function hideColumn () {
     var column = getTableCellIndexByHeaderName("Бележки");
     var tbl = document.getElementById("orders-table");
     var i;
@@ -46,7 +46,7 @@ function hide () {
 
 function start()
 {
-    hide();
+    hideColumn();
     addRowHandlers();
 }
 

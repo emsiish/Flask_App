@@ -12,16 +12,16 @@
 <body>
     <h2 style="text-align: center">Поръчки</h2>
     <div class="table-responsive">
-    <table id="orders-table" class="table table-success table-hover table-striped table-bordered border-dark table-sm" style="cursor: pointer">
-        <tr>
+    <table id="orders-table" class="table table-success table-hover table-striped table-sm" style="cursor: pointer; border: 1px solid black;">
+        <tr class="table-primary">
             {% for header in headings %}
-            <th>{{ header }}</th>
+            <th style="border: 1px solid black;">{{ header }}</th>
             {% endfor %}
         </tr>
         {% for row in data %}
         <tr>
             {% for cell in row %}
-            <td>{{ cell }}</td>
+            <td style="border: 1px solid black;">{{ cell }}</td>
             {% endfor %}
         </tr>
         {% endfor %}
